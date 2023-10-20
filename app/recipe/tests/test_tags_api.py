@@ -38,8 +38,8 @@ class PrivateTagsApiTests(TestCase):
 
     def setUp(self):
         self.user = create_user()
-        self.client - APIClient()
-        self.client.force_authenitcate(self.usuer)
+        self.client = APIClient()
+        self.client.force_authenticate(self.user)
 
     def test_retrieve_tags(self):
         """Test retrieving a list of tags"""
@@ -51,7 +51,7 @@ class PrivateTagsApiTests(TestCase):
         tags = Tag.objects.all().order_by('-name')
         serializer = TagSerializer(tags, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqaul(res.data, serializer.data)
+        self.assertEqual(res.data, serializer.data)
 
 
     def test_tags_limited_to_user(self):
@@ -63,7 +63,7 @@ class PrivateTagsApiTests(TestCase):
         res = self.client.get(TAGS_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.asserEqual(len(res.data), 1)
+        self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data[0]['name'], tag.name)
         self.assertEqual(res.data[0]['id'], tag.id)
 
